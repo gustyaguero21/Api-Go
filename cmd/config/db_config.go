@@ -1,0 +1,9 @@
+package config
+
+// database queries
+const (
+	CheckDBQuery  = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?"
+	CreateDBQuery = "CREATE DATABASE IF NOT EXISTS %s"
+	UseDBQuery    = "USE %s"
+)
+
