@@ -3,6 +3,9 @@ package router
 import (
 	"api-go/internal/database"
 	"api-go/internal/models"
+	"api-go/internal/repository"
+	"api-go/internal/services"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -16,22 +19,28 @@ func URLMapping(r *gin.Engine){
 	if err!=nil{
 		log.Fatal(err)
 	}
-	mr:=database.MoviesRepository{DB: db}
-	
+	mr:=repository.MoviesRepository{DB: db}
+	ms:=services.MovieService{MR: mr}
+
+
 	if tableErr:=mr.CreateTables();tableErr!=nil{
 		log.Fatal(tableErr)
 	}
-	actores := []models.Actor{
-		{Nombre: "Tom", Apellido: "Hanks", Nacionalidad: "EEUU", Trayectoria: time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC)},
-		{Nombre: "Leonardo", Apellido: "DiCaprio", Nacionalidad: "EEUU", Trayectoria: time.Date(1991, 1, 1, 0, 0, 0, 0, time.UTC)},
-		{Nombre: "Meryl", Apellido: "Streep", Nacionalidad: "EEUU", Trayectoria: time.Date(1975, 1, 1, 0, 0, 0, 0, time.UTC)},
-		{Nombre: "Robert", Apellido: "De Niro", Nacionalidad: "EEUU", Trayectoria: time.Date(1965, 1, 1, 0, 0, 0, 0, time.UTC)},
-		{Nombre: "Scarlett", Apellido: "Johansson", Nacionalidad: "EEUU", Trayectoria: time.Date(1994, 1, 1, 0, 0, 0, 0, time.UTC)},
-}	
+	
+	directors:= []models.Director{
+    {Nombre: "", Apellido: "Nolan", Nacionalidad: "Reino Unido", Trayectoria: time.Date(1998, 1, 1, 0, 0, 0, 0, time.UTC)},
+    {Nombre: "Quentin", Apellido: "Tarantino", Nacionalidad: "EEUU", Trayectoria: time.Date(1992, 1, 1, 0, 0, 0, 0, time.UTC)},
+    {Nombre: "Martin", Apellido: "Scorsese", Nacionalidad: "EEUU", Trayectoria: time.Date(1967, 1, 1, 0, 0, 0, 0, time.UTC)},
+    {Nombre: "James", Apellido: "Cameron", Nacionalidad: "Canadá", Trayectoria: time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC)},
+}
 
-	if addActorErr:=mr.AddActors(actores);addActorErr!=nil{
-		log.Fatal(addActorErr)
+
+	directores,directErr:=ms.CreateDirectors(&gin.Context{},directors)
+	if directErr!=nil{
+		log.Fatal(directErr)
 	}
+
+	fmt.Println(directores)
 
 	api:=r.Group("/movies")
 
