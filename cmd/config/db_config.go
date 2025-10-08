@@ -104,5 +104,5 @@ var TableQueries = []string{
 var(
     AddDirectorsQuery=`INSERT INTO Director (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
     AddActorsQuery=`INSERT INTO Actor (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
-    CheckExistences=`SELECT * FROM %s WHERE nombre = ? LIMIT 1;`
+    CheckExistences=`SELECT id FROM %s WHERE nombre = ? AND apellido = ? LIMIT 1;`
 )

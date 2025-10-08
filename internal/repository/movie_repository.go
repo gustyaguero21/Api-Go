@@ -12,53 +12,48 @@ type MoviesRepository struct{
 }
 
 
-func (mr *MoviesRepository) AddDirectors(directors []models.Director) error {
-	for _, director := range directors {
-		if !mr.checkExistence("Director", director.Nombre) {
-			_, err := mr.DB.Exec(
-				config.AddDirectorsQuery,
-				director.Nombre,
-				director.Apellido,
-				director.Nacionalidad,
-				director.Trayectoria,
-			)
-			if err != nil {
-				return err
-			}
-		}
+func (mr *MoviesRepository) AddDirectorRepository(director models.Director) error {
+	if mr.checkExistence("Director", director.Nombre, director.Apellido) {
+		return fmt.Errorf("el director ingresado ya existe")
 	}
-	return nil
+
+	_, err := mr.DB.Exec(
+		config.AddDirectorsQuery,
+		director.Nombre,
+		director.Apellido,
+		director.Nacionalidad,
+		director.Trayectoria,
+	)
+	return err
 }
 
-func (mr *MoviesRepository) AddActors(actors []models.Actor) error {
-	for _, actor := range actors {
-		if !mr.checkExistence("Actor", actor.Nombre) {
-			_, err := mr.DB.Exec(
-				config.AddActorsQuery,
-				actor.Nombre,
-				actor.Apellido,
-				actor.Nacionalidad,
-				actor.Trayectoria,
-			)
-			if err != nil {
-				return err
-			}
-		}
+
+func (mr *MoviesRepository) AddActorRepository(actor models.Actor) error {
+	if mr.checkExistence("Actor", actor.Nombre, actor.Apellido) {
+		return fmt.Errorf("el actor ingresado ya existe")
 	}
-	return nil
+	_, err := mr.DB.Exec(
+			config.AddActorsQuery,
+			actor.Nombre,
+			actor.Apellido,
+			actor.Nacionalidad,
+			actor.Trayectoria,
+		)
+		
+	return err
 }
 
-func (mr *MoviesRepository) checkExistence(tableName, name string) bool {
+
+func (mr *MoviesRepository) checkExistence(tableName, nombre, apellido string) bool {
 	query := fmt.Sprintf(config.CheckExistences, tableName)
-
-	var exists string
-	err := mr.DB.QueryRow(query, name).Scan(&exists)
-
+	var id int
+	err := mr.DB.QueryRow(query, nombre, apellido).Scan(&id)
 	if err == sql.ErrNoRows {
-		return false 
+		return false // NO existe
 	}
 	if err != nil {
+		fmt.Println("Error en checkExistence:", err)
 		return false
 	}
-	return true
+	return true // sí existe
 }

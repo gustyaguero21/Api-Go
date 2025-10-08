@@ -1,7 +1,10 @@
 package router
 
 import (
+	"api-go/internal/controller"
 	"api-go/internal/database"
+	"api-go/internal/repository"
+	"api-go/internal/services"
 	"log"
 	"net/http"
 
@@ -18,8 +21,9 @@ func URLMapping(r *gin.Engine){
 	database.CreateTables(db)
 
 
-	// mr:=repository.MoviesRepository{DB: db}
-	// ms:=services.MovieService{MR: mr}
+	mr:=repository.MoviesRepository{DB: db}
+	ms:=services.MovieService{MR: mr}
+	mc:=controller.MovieContoller{MS:ms}
 
 	api:=r.Group("/movies")
 
@@ -28,4 +32,7 @@ func URLMapping(r *gin.Engine){
 			"message":"pong",
 		})
 	})
+
+	api.POST("/add-director",mc.AddDirectorController)
+	api.POST("/add-actor",mc.AddActorController)
 }
