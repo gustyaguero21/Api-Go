@@ -28,7 +28,7 @@ func URLMapping(r *gin.Engine){
 	}
 	
 	directors:= []models.Director{
-    {Nombre: "", Apellido: "Nolan", Nacionalidad: "Reino Unido", Trayectoria: time.Date(1998, 1, 1, 0, 0, 0, 0, time.UTC)},
+    {Nombre: "Christopher", Apellido: "Nolan", Nacionalidad: "Reino Unido", Trayectoria: time.Date(1998, 1, 1, 0, 0, 0, 0, time.UTC)},
     {Nombre: "Quentin", Apellido: "Tarantino", Nacionalidad: "EEUU", Trayectoria: time.Date(1992, 1, 1, 0, 0, 0, 0, time.UTC)},
     {Nombre: "Martin", Apellido: "Scorsese", Nacionalidad: "EEUU", Trayectoria: time.Date(1967, 1, 1, 0, 0, 0, 0, time.UTC)},
     {Nombre: "James", Apellido: "Cameron", Nacionalidad: "Canadá", Trayectoria: time.Date(1980, 1, 1, 0, 0, 0, 0, time.UTC)},
