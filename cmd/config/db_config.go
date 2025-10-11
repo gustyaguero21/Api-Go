@@ -88,9 +88,22 @@ var TableQueries = []string{
         monto DECIMAL(15,2),
         FOREIGN KEY (pelicula_id) REFERENCES Pelicula(id)
     );`,
+
+    `CREATE TABLE IF NOT EXISTS Expedientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero_expediente VARCHAR(50) NOT NULL,
+    pelicula_id INT NOT NULL,
+    fecha_creacion DATETIME NOT NULL,
+    descripcion TEXT,
+    estado ENUM('en_proceso', 'proximo_estreno', 'estrenada', 'archivada'),
+    FOREIGN KEY (pelicula_id) REFERENCES Pelicula(id)
+    );`,
+
 }
 
 var(
-    AddDirectorsQuery=`INSERT INTO Director (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
-    AddActorsQuery=`INSERT INTO Actor (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
+    AddDirectorQuery=`INSERT INTO Director (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
+    AddActorQuery=`INSERT INTO Actor (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
+    CheckExistences=`SELECT id FROM %s WHERE nombre = ? AND apellido = ? LIMIT 1;`
+    AddCastQuery=`INSERT INTO Reparto (pelicula_id,actor_id,personaje) VALUES (?,?,?);`
 )

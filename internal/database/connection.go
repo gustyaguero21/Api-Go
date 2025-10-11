@@ -40,6 +40,16 @@ func DatabaseConn() (*sql.DB, error) {
 	return db, nil
 }
 
+func CreateTables(db *sql.DB) error{
+	for _,query:=range(config.TableQueries){
+		_,err:=db.Exec(query)
+		if err!=nil{
+			return  err
+		}
+	}
+	return nil
+}
+
 func checkExists(db *sql.DB, dbName string) error {
 	var exists string
 	err := db.QueryRow(config.CheckDBQuery, dbName).Scan(&exists)

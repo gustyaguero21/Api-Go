@@ -5,7 +5,6 @@ import (
 	"api-go/internal/repository"
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,20 +13,37 @@ type MovieService struct{
 	MR repository.MoviesRepository
 }
 
-func(ms *MovieService)CreateDirectors(ctx *gin.Context,directors []models.Director)([]models.Director,error){
-	for _,dato:=range(directors){
-		if dato.Nombre=="" || dato.Apellido=="" || dato.Nacionalidad == "" {
-			return nil,fmt.Errorf("algunos de los parametros estan vacios o son invalidos")
-		}
-		validData:=strconv.Itoa(time.Time.Year(dato.Trayectoria))
-		if validData==""{
-			return nil,fmt.Errorf("algunos de los parametros estan vacios o son invalidos")
-		}
+func(ms *MovieService)AddDirectorService(ctx *gin.Context,director models.Director)(models.Director,error){
+	if director.Nombre == "" || director.Apellido == "" || director.Nacionalidad == "" || director.Trayectoria.IsZero() {
+    	return models.Director{}, fmt.Errorf("some params missing or invalid")
 	}
 
-	if createDirectorErr:=ms.MR.AddDirectors(directors);createDirectorErr!=nil{
-		return nil,fmt.Errorf("error al crear un nuevo director. Error: %s",createDirectorErr)
+	if createDirectorErr:=ms.MR.AddDirectorRepository(director);createDirectorErr!=nil{
+		return models.Director{},fmt.Errorf("error creating new director. Error: %s",createDirectorErr)
 	}
 
-	return directors,nil
+	return director,nil
+}
+
+func(ms *MovieService)AddActorService(ctx *gin.Context,actors models.Actor)(models.Actor,error){
+	if actors.Nombre=="" || actors.Apellido=="" || actors.Nacionalidad == "" || actors.Trayectoria.IsZero() {
+		return models.Actor{},fmt.Errorf("some params missing or invalid")
+	}
+
+	if createActorErr:=ms.MR.AddActorRepository(actors);createActorErr!=nil{
+		return models.Actor{},fmt.Errorf("error creating new actor. Error: %s",createActorErr)
+	}
+
+	return actors,nil
+}
+
+func(ms *MovieService)AddCastService(ctx *gin.Context,reparto models.Reparto)(models.Reparto,error){
+	if strconv.Itoa(reparto.PeliculaID)=="" || strconv.Itoa(reparto.ActorID)=="" || reparto.Personaje== ""{
+		return models.Reparto{},fmt.Errorf("some params missing or invalid")
+	}
+
+	if createCastErr:=ms.MR.AddCastRepository(reparto);createCastErr!=nil{
+		return models.Reparto{},fmt.Errorf("error creating new cast. Error: %s",createCastErr)
+	}
+	return reparto,nil
 }
