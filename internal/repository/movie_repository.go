@@ -51,6 +51,8 @@ func (mr *MoviesRepository)AddCastRepository(reparto models.Reparto)error{
 	return nil
 }
 
+
+
 func (mr *MoviesRepository) checkExistence(tableName, nombre, apellido string) bool {
 	query := fmt.Sprintf(config.CheckExistences, tableName)
 	var id int

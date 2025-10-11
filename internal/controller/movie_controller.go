@@ -30,7 +30,7 @@ func(mc *MovieContoller)AddDirectorController(ctx *gin.Context){
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-    	"message": "Director agregado exitosamente",
+    	"message": "Director added succesfully",
     	"director": created,
 	})
 }
@@ -52,8 +52,29 @@ func(mc *MovieContoller)AddActorController(ctx *gin.Context){
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
-    	"message": "Actor agregado exitosamente",
+    	"message": "Actor added successfully",
     	"actor": created,
 	})
 }
 
+func(mc *MovieContoller)AddCastController(ctx *gin.Context){
+	var reparto models.Reparto
+
+	if err:=ctx.ShouldBindJSON(&reparto);err!=nil{
+		ctx.JSON(http.StatusBadRequest,gin.H{
+			"error deserializing body":err.Error(),
+		})
+		return
+	}
+
+	created,createErr:=mc.MS.AddCastService(ctx,reparto)
+	if createErr!=nil{
+		ctx.JSON(http.StatusInternalServerError,createErr.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusCreated,gin.H{
+		"message":"Cast added successfully",
+		"cast":created,
+	})
+}

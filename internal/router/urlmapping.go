@@ -6,7 +6,6 @@ import (
 	"api-go/internal/repository"
 	"api-go/internal/services"
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,14 +24,11 @@ func URLMapping(r *gin.Engine){
 	ms:=services.MovieService{MR: mr}
 	mc:=controller.MovieContoller{MS:ms}
 
-	api:=r.Group("/movies")
-
-	api.GET("/ping",func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK,gin.H{
-			"message":"pong",
-		})
-	})
+	api:=r.Group("/add-data")
 
 	api.POST("/add-director",mc.AddDirectorController)
 	api.POST("/add-actor",mc.AddActorController)
+	api.POST("/add-cast",mc.AddCastController)
+
+	
 }
