@@ -4,6 +4,7 @@ import (
 	"api-go/internal/models"
 	"api-go/internal/repository"
 	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,3 +37,13 @@ func(ms *MovieService)AddActorService(ctx *gin.Context,actors models.Actor)(mode
 	return actors,nil
 }
 
+func(ms *MovieService)AddCastService(ctx *gin.Context,reparto models.Reparto)(models.Reparto,error){
+	if strconv.Itoa(reparto.PeliculaID)=="" || strconv.Itoa(reparto.ActorID)=="" || reparto.Personaje== ""{
+		return models.Reparto{},fmt.Errorf("some params missing or invalid")
+	}
+
+	if createCastErr:=ms.MR.AddCastRepository(reparto);createCastErr!=nil{
+		return models.Reparto{},fmt.Errorf("error creating new cast. Error: %s",createCastErr)
+	}
+	return reparto,nil
+}

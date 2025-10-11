@@ -18,7 +18,7 @@ func (mr *MoviesRepository) AddDirectorRepository(director models.Director) erro
 	}
 
 	_, err := mr.DB.Exec(
-		config.AddDirectorsQuery,
+		config.AddDirectorQuery,
 		director.Nombre,
 		director.Apellido,
 		director.Nacionalidad,
@@ -33,7 +33,7 @@ func (mr *MoviesRepository) AddActorRepository(actor models.Actor) error {
 		return fmt.Errorf("actor already exists")
 	}
 	_, err := mr.DB.Exec(
-			config.AddActorsQuery,
+			config.AddActorQuery,
 			actor.Nombre,
 			actor.Apellido,
 			actor.Nacionalidad,
@@ -43,6 +43,13 @@ func (mr *MoviesRepository) AddActorRepository(actor models.Actor) error {
 	return err
 }
 
+func (mr *MoviesRepository)AddCastRepository(reparto models.Reparto)error{
+	_,err:=mr.DB.Exec(config.AddCastQuery,reparto.PeliculaID,reparto.ActorID,reparto.Personaje)
+	if err!=nil{
+		return err
+	}
+	return nil
+}
 
 func (mr *MoviesRepository) checkExistence(tableName, nombre, apellido string) bool {
 	query := fmt.Sprintf(config.CheckExistences, tableName)

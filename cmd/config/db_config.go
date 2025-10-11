@@ -102,7 +102,8 @@ var TableQueries = []string{
 }
 
 var(
-    AddDirectorsQuery=`INSERT INTO Director (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
-    AddActorsQuery=`INSERT INTO Actor (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
+    AddDirectorQuery=`INSERT INTO Director (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
+    AddActorQuery=`INSERT INTO Actor (nombre,apellido,nacionalidad,trayectoria) VALUES (?,?,?,?);`
     CheckExistences=`SELECT id FROM %s WHERE nombre = ? AND apellido = ? LIMIT 1;`
+    AddCastQuery=`INSERT INTO Reparto (pelicula_id,actor_id,personaje) VALUES (?,?,?);`
 )
