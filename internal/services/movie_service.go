@@ -14,11 +14,11 @@ type MovieService struct{
 
 func(ms *MovieService)AddDirectorService(ctx *gin.Context,director models.Director)(models.Director,error){
 	if director.Nombre == "" || director.Apellido == "" || director.Nacionalidad == "" || director.Trayectoria.IsZero() {
-    	return models.Director{}, fmt.Errorf("algunos de los parametros estan vacios o son invalidos")
+    	return models.Director{}, fmt.Errorf("some params missing or invalid")
 	}
 
 	if createDirectorErr:=ms.MR.AddDirectorRepository(director);createDirectorErr!=nil{
-		return models.Director{},fmt.Errorf("error al crear un nuevo director. Error: %s",createDirectorErr)
+		return models.Director{},fmt.Errorf("error creating new director. Error: %s",createDirectorErr)
 	}
 
 	return director,nil
@@ -26,11 +26,11 @@ func(ms *MovieService)AddDirectorService(ctx *gin.Context,director models.Direct
 
 func(ms *MovieService)AddActorService(ctx *gin.Context,actors models.Actor)(models.Actor,error){
 	if actors.Nombre=="" || actors.Apellido=="" || actors.Nacionalidad == "" || actors.Trayectoria.IsZero() {
-		return models.Actor{},fmt.Errorf("algunos de los parametros estan vacios o son invalidos")
+		return models.Actor{},fmt.Errorf("some params missing or invalid")
 	}
 
 	if createActorErr:=ms.MR.AddActorRepository(actors);createActorErr!=nil{
-		return models.Actor{},fmt.Errorf("error al crear un nuevo actor. Error: %s",createActorErr)
+		return models.Actor{},fmt.Errorf("error creating new actor. Error: %s",createActorErr)
 	}
 
 	return actors,nil

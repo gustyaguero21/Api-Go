@@ -59,7 +59,7 @@ type Productora struct {
 type Plataforma struct {
 	ID       int    `json:"id"`
 	Nombre   string `json:"nombre"`
-	Tipo     string `json:"tipo"` // streaming, cine, TV
+	Tipo     string `json:"tipo"`
 	SitioWeb string `json:"sitio_web"`
 }
 
@@ -73,3 +73,13 @@ type Pelicula struct {
 	ProductoraID int     `json:"productora_id"`
 	PlataformaID int     `json:"plataforma_id"`
 }
+
+type Expediente struct{
+	ID int   `json:"id"`
+	NumeroExpediente string `json:"numero_expediente"`
+	PeliculaID int `json:"pelicula_id"`
+	FechaCreacion time.Time `json:"fecha_creacion"`
+	Descripcion string `json:"descripcion"`
+	Estado string `json:"estado"`
+}
+
